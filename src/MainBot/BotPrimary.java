@@ -105,7 +105,7 @@ public final class BotPrimary {
     ) {
         IChannel channel = event.getGuild().getDefaultChannel();
         IUser user = event.getUser();
-        String joinMessage = "**Welcome to JRAS** " + user.mention() + "!";
+        String joinMessage = "**Welcome to **" + event.getGuild().getName() + " " + user.mention() + "!";
         try {
             channel.sendMessage(joinMessage);
         } catch (NullPointerException e) {

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package MainBot;
 
 import sx.blah.discord.api.ClientBuilder;
@@ -28,9 +24,8 @@ import sx.blah.discord.handle.obj.StatusType;
  */
 public final class BotPrimary {
 
-    public static final IDiscordClient BOT = createClient("NDIxNzAzMDYwOTc3NjE0ODUw.DYWSSw.KClALJ-IssVfMCNxC2wY8bT-cj4", true);
-    //NDIxNzAzMDYwOTc3NjE0ODUw.DYWSSw.KClALJ-IssVfMCNxC2wY8bT-cj4 (DEV BOT)
-    //NDI1MzE4ODk1NDU3NDAyODgw.DZLLPQ.gcFGpW6JzrMUB4UZ300bH2-WSA0 (PUBLIC BOT)
+    public static final IDiscordClient BOT = createClient("", true);
+
 
     public static IDiscordClient createClient(String token, boolean login) {
 
@@ -137,21 +132,8 @@ public final class BotPrimary {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("System".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BotPrimary.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
         EventDispatcher dis = BOT.getDispatcher();
         dis.registerListener(new BotPrimary());
-
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new JRASBotGUI().setVisible(true);
         });

@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2018 crysi
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package MainBot;
 
 import java.sql.Connection;
@@ -76,12 +60,12 @@ public class Setup {
         idConverted = idConverted.replaceAll("8", "EIGHT");
         idConverted = idConverted.replaceAll("9", "NINE");
         Connection connection;
-        String execute = "INSERT INTO " + idConverted + "(ROLE, ROLEPREFIX) VALUES (" + "'" + role + "'" + ", " + "'" + prefix + "'" + ")";
+        String execute = "INSERT INTO " + idConverted + "(ROLE, ROLEPREFIX) VALUES (" + "'" + role.get(0) + "'" + ", " + "'" + prefix + "'" + ")";
 
         try {
             connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
             Statement statement = connection.createStatement();
-            if (statement.execute("DELETE FROM " + idConverted + " WHERE ROLE = '" + role + "'")) {
+            if (statement.execute("DELETE FROM " + idConverted + " WHERE ROLE = '" + role.get(0) + "'")) {
             }
             statement.execute(execute);
         } catch (SQLException ex) {
@@ -89,7 +73,30 @@ public class Setup {
         }
     }
 
-    public void adminRole() {
-
+    public void adminRole(IMessage message) {
+        IGuild guild = message.getGuild();
+        List<IRole> role = message.getRoleMentions();
+        String id = guild.getStringID();
+        String idConverted = id.replaceAll("0", "Zero");
+        idConverted = idConverted.replaceAll("1", "One");
+        idConverted = idConverted.replaceAll("2", "TWO");
+        idConverted = idConverted.replaceAll("3", "THREE");
+        idConverted = idConverted.replaceAll("4", "FOUR");
+        idConverted = idConverted.replaceAll("5", "FIVE");
+        idConverted = idConverted.replaceAll("6", "SIX");
+        idConverted = idConverted.replaceAll("7", "SEVEN");
+        idConverted = idConverted.replaceAll("8", "EIGHT");
+        idConverted = idConverted.replaceAll("9", "NINE");
+        Connection connection;
+        String execute = "INSERT INTO " + idConverted + " (ADMINROLE) VALUES (" + "'" + role.get(0) + "')";
+        try {
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
+            Statement statement = connection.createStatement();
+            if (statement.execute("DELETE FROM " + idConverted + " WHERE ADMINROLE = '" + role.get(0) + "'")) {
+            }
+            statement.execute(execute);
+        } catch (SQLException ex) {
+            Logger.getLogger(Setup.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -16,17 +16,17 @@ import sx.blah.discord.util.RequestBuffer;
 
 /**
  *
- * @author crysi
+ * @author EasternGamer
  */
 public class UpdateCommand {
-    
+
     public void updatePrefix(IGuild guild) {
         String idConverted = guild.getStringID();
         List<IRole> roles = guild.getRoles();
         List<IUser> players = guild.getUsers();
         List<String> prefixes = new ArrayList<>();
         List<String> ranksSaved = new ArrayList<>();
-        
+
         try {
             idConverted = idConverted.replaceAll("0", "Zero");
             idConverted = idConverted.replaceAll("1", "One");
@@ -61,18 +61,20 @@ public class UpdateCommand {
                 String serverRole = r.toString();
                 serverRole = serverRole.replace("[", "").replace("]", "");
                 String sqlRole = ranksSaved.get(number);
-                sqlRole = sqlRole.replace("[", "").replace("]", "");
-                if (sqlRole.equals(serverRole)) {
-                    for (IUser player : players) {
-                        if (!player.getNicknameForGuild(guild).equals(rank + player.getName())) {
-                            if (player.hasRole(r)) {
-                                RequestBuffer.request(() -> {
-                                guild.setUserNickname(player, rank + player.getName());
-                                });
+                if (sqlRole != null) {
+                    sqlRole = sqlRole.replace("[", "").replace("]", "");
+                    if (sqlRole.equals(serverRole)) {
+                        for (IUser player : players) {
+                            if (!player.getDisplayName(guild).equals(rank + player.getName())) {
+                                if (player.hasRole(r)) {
+                                    RequestBuffer.request(() -> {
+                                        guild.setUserNickname(player, rank + player.getName());
+                                    });
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         }

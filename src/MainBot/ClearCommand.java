@@ -1,4 +1,3 @@
-
 package MainBot;
 
 import static MainBot.JRASBotGUI.NEWLINE;
@@ -9,7 +8,7 @@ import sx.blah.discord.util.RequestBuffer;
 
 /**
  *
- * @author crysi
+ * @author EasternGamer
  */
 public class ClearCommand {
 

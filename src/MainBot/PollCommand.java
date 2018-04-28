@@ -1,5 +1,7 @@
+
 package MainBot;
 
+import static MainBot.BotPrimary.VERSION;
 import static MainBot.JRASBotGUI.NEWLINE;
 import java.time.Instant;
 import java.util.List;
@@ -10,7 +12,7 @@ import sx.blah.discord.util.RequestBuffer;
 
 /**
  *
- * @author crysi
+ * @author EasternGamer
  */
 public class PollCommand {
 
@@ -166,8 +168,8 @@ public class PollCommand {
         }
 
         message.delete();
-        builder.withFooterIcon("https://i.imgur.com/a3mOAbZ.png");
-        builder.withFooterText("Poll | v1.0");
+        builder.withFooterIcon("https://i.imgur.com/ghrEWh8.png");
+        builder.withFooterText("Poll | " + VERSION);
         builder.withTimestamp(Instant.now());
         message.getChannel().sendMessage(builder.build());
 
@@ -186,45 +188,45 @@ public class PollCommand {
             String eight = "\u0038\u20E3";
             String nine = "\u0039\u20E3";
             RequestBuffer.request(() -> {
-            if (option1B == true) {
-                latest.addReaction(ReactionEmoji.of(one));
-            }
-            if (option2B == true) {
-                latest.addReaction(ReactionEmoji.of(two));
-            }
-            if (option3B == true) {
-                latest.addReaction(ReactionEmoji.of(three));
-            }
-            if (option4B == true) {
-                latest.addReaction(ReactionEmoji.of(four));
-            }
-            if (option5B == true) {
-                latest.addReaction(ReactionEmoji.of(five));
-            }
-            if (option6B == true) {
-                latest.addReaction(ReactionEmoji.of(six));
-            }
-            if (option7B == true) {
-                latest.addReaction(ReactionEmoji.of(seven));
-            }
-            if (option8B == true) {
-                latest.addReaction(ReactionEmoji.of(eight));
-            }
-            if (option9B == true) {
-                latest.addReaction(ReactionEmoji.of(nine));
-            }
-            poll = false;
-            option1B = false;
-            option2B = false;
-            option3B = false;
-            option4B = false;
-            option5B = false;
-            option6B = false;
-            option7B = false;
-            option8B = false;
-            option9B = false;
-        });
-      }
+                if (option1B == true) {
+                    latest.addReaction(ReactionEmoji.of(one));
+                }
+                if (option2B == true) {
+                    latest.addReaction(ReactionEmoji.of(two));
+                }
+                if (option3B == true) {
+                    latest.addReaction(ReactionEmoji.of(three));
+                }
+                if (option4B == true) {
+                    latest.addReaction(ReactionEmoji.of(four));
+                }
+                if (option5B == true) {
+                    latest.addReaction(ReactionEmoji.of(five));
+                }
+                if (option6B == true) {
+                    latest.addReaction(ReactionEmoji.of(six));
+                }
+                if (option7B == true) {
+                    latest.addReaction(ReactionEmoji.of(seven));
+                }
+                if (option8B == true) {
+                    latest.addReaction(ReactionEmoji.of(eight));
+                }
+                if (option9B == true) {
+                    latest.addReaction(ReactionEmoji.of(nine));
+                }
+                poll = false;
+                option1B = false;
+                option2B = false;
+                option3B = false;
+                option4B = false;
+                option5B = false;
+                option6B = false;
+                option7B = false;
+                option8B = false;
+                option9B = false;
+            });
+        }
     }
 
 }

@@ -1,3 +1,4 @@
+
 package MainBot;
 
 import java.sql.Connection;
@@ -14,7 +15,7 @@ import sx.blah.discord.handle.obj.IRole;
 
 /**
  *
- * @author crysi
+ * @author EasternGamer
  */
 public class Setup {
 
@@ -40,7 +41,7 @@ public class Setup {
         } catch (SQLException ex) {
             Logger.getLogger(Setup.class.getName()).log(Level.SEVERE, null, ex);
         }
-        event.getChannel().sendMessage("**TO GET STARTED**\n-Default commands can be found with ``!commands``\n -You will need to add your admin role with ``!adminrole @role``\n -To add role prefixes to roles ``!roleadd @Role 'Prefix'``\n -");
+        event.getChannel().sendMessage("**TO GET STARTED**\n-Default commands can be found with ``!commands``\n -You will need to add your admin role with ``!adminrole @role``\n -To add role prefixes to roles ``!roleadd @Role 'Prefix'``\n -**TO USE !ADMINROLE YOU NEED TO BE THE CREATOR OF THE SERVER**");
     }
 
     public void ServerRoleAdd(IMessage message) {

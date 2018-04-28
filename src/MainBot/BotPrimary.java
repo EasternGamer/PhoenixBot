@@ -34,7 +34,7 @@ import sx.blah.discord.util.RequestBuffer;
 public final class BotPrimary {
 
     public static final String VERSION = "v1.0";
-    public static final IDiscordClient BOT = createClient("", true);
+    public static final IDiscordClient BOT = createClient("ID", true);
 
     public static IDiscordClient createClient(String token, boolean login) {
 

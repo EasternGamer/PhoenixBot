@@ -1,4 +1,3 @@
-
 package MainBot;
 
 import java.sql.Connection;
@@ -33,8 +32,12 @@ import sx.blah.discord.util.RequestBuffer;
  */
 public final class BotPrimary {
 
-    public static final String VERSION = "v1.0";
-    public static final IDiscordClient BOT = createClient("ID", true);
+    public static final String PHOENIX = "https://i.imgur.com/ghrEWh8.png";
+    public static final String COUNTRY = "https://i.imgur.com/a3mOAbZ.png";
+    public static final String DISCORD = "https://discord.gg/RuK3Sw6";
+    public static final String GITHUB = "https://github.com/EasternGamer/PhoenixBot";
+    public static final String VERSION = "v1.2";
+    public static final IDiscordClient BOT = createClient("NDM5NDU0ODQyMDcxNTQ3OTA1.DcZsnw.QkEFw-2Xn0pOfxp90bPCDhj0rp0", true);
 
     public static IDiscordClient createClient(String token, boolean login) {
 
@@ -53,6 +56,7 @@ public final class BotPrimary {
 
     }
     public int num = 0;
+    public String prefix = "!";
 
     @EventSubscriber
     @SuppressWarnings({"empty-statement"})
@@ -74,23 +78,36 @@ public final class BotPrimary {
         IGuild guild = message.getGuild();
         List<IRole> roles = guild.getRoles();
         IRole adminRank = null;
+        String idConverted = guild.getStringID().replaceAll("0", "Zero");
+        idConverted = idConverted.replaceAll("1", "One");
+        idConverted = idConverted.replaceAll("2", "TWO");
+        idConverted = idConverted.replaceAll("3", "THREE");
+        idConverted = idConverted.replaceAll("4", "FOUR");
+        idConverted = idConverted.replaceAll("5", "FIVE");
+        idConverted = idConverted.replaceAll("6", "SIX");
+        idConverted = idConverted.replaceAll("7", "SEVEN");
+        idConverted = idConverted.replaceAll("8", "EIGHT");
+        idConverted = idConverted.replaceAll("9", "NINE");
+        String execute = "select * from " + idConverted;
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(execute);
+            while (rs.next()) {
+                if (rs.getString(5) != null) {
+                    prefix = rs.getString(5);
+                }
+            }
+        } catch (SQLException ex) {
+            message.getChannel().sendMessage("Type '!register' to register the server for further command use...");
+            System.out.println("Register Sent to " + message.getAuthor().getName());
+        }
+
         //////////////////////////////////////////
         //Commands//
         //////////////////////////////////////////
         ///Register Commands///
-        if (command.startsWith("!")) {
-            String idConverted = guild.getStringID().replaceAll("0", "Zero");
-            idConverted = idConverted.replaceAll("1", "One");
-            idConverted = idConverted.replaceAll("2", "TWO");
-            idConverted = idConverted.replaceAll("3", "THREE");
-            idConverted = idConverted.replaceAll("4", "FOUR");
-            idConverted = idConverted.replaceAll("5", "FIVE");
-            idConverted = idConverted.replaceAll("6", "SIX");
-            idConverted = idConverted.replaceAll("7", "SEVEN");
-            idConverted = idConverted.replaceAll("8", "EIGHT");
-            idConverted = idConverted.replaceAll("9", "NINE");
-            String execute = "select * from " + idConverted;
-
+        if (command.startsWith(prefix)) {
             Connection connection;
             try {
                 connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
@@ -107,60 +124,70 @@ public final class BotPrimary {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Setup.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error");
             }
         }
-        if (command.startsWith("!register")) {
+        if (command.startsWith(prefix + "register")) {
             Setup setup = new Setup();
             setup.ServerReg(event);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.startsWith("!admin") && guild.getOwner().equals(sender)) {
+        if (command.startsWith(prefix + "admin") && guild.getOwner().equals(sender)) {
             Setup setupAdmin = new Setup();
             setupAdmin.adminRole(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.startsWith("!roleadd") && sender.hasRole(adminRank)) {
+        if (command.startsWith(prefix + "roleadd") && sender.hasRole(adminRank)) {
             Setup setup = new Setup();
             setup.ServerRoleAdd(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + sender.getName() + ": " + command);
         }
-        if (command.equals("!updateprefix") && sender.hasRole(adminRank)) {
+        if (command.equals(prefix + "updateprefix") && sender.hasRole(adminRank)) {
             UpdateCommand updateCommand = new UpdateCommand();
             updateCommand.updatePrefix(guild);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
+        }
+        if (command.startsWith("!prefix") && sender.hasRole(adminRank)) {
+            Setup setup = new Setup();
+            setup.prefixChange(message);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
+        }
+        if (command.startsWith(prefix + "joinleave") && sender.hasRole(adminRank)) {
+            Setup setup = new Setup();
+            setup.joinLeaveMessage(message);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
 
         ///Standard Commands///
-        if (command.equals("!commands")) {
+        if (command.equals(prefix + "commands")) {
             BasicCommands basicCommands = new BasicCommands();
             basicCommands.commands(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.equals("!botinfo")) {
+        if (command.equals(prefix + "info")) {
             BasicCommands basicCommands = new BasicCommands();
             basicCommands.info(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.equals("!latency")) {
+        if (command.equals(prefix + "latency")) {
             BasicCommands basicCommands = new BasicCommands();
             basicCommands.ping(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.startsWith("!clear ") && sender.hasRole(adminRank)) {
+        if (command.startsWith(prefix + "clear") && sender.hasRole(adminRank)) {
             ClearCommand clear = new ClearCommand();
             clear.clear(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.equals("!restore") && sender.hasRole(adminRank)) {
+        if (command.equals(prefix + "restore") && sender.hasRole(adminRank)) {
             ClearCommand restore = new ClearCommand();
             restore.restore(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
         }
-        if (command.startsWith("!poll ") && sender.hasRole(adminRank)) {
+        if (command.startsWith(prefix + "poll ") && sender.hasRole(adminRank)) {
             PollCommand pollCommand = new PollCommand();
             pollCommand.pollProcess(message);
-            System.out.println(sender.getName() + ": " + command);
+            System.out.println(event.getChannel().getLongID() + " " + sender.getName() + ": " + command);
 
         }
     }
@@ -168,41 +195,101 @@ public final class BotPrimary {
     @EventSubscriber
     public void onJoin(UserJoinEvent event
     ) {
+        Boolean join = true;
         IChannel channel = event.getGuild().getDefaultChannel();
         IUser user = event.getUser();
-        String joinMessage = "**Welcome to **" + event.getGuild().getName() + " " + user.mention() + "!";
+        String idConverted = event.getGuild().getStringID().replaceAll("0", "Zero");
+        idConverted = idConverted.replaceAll("1", "One");
+        idConverted = idConverted.replaceAll("2", "TWO");
+        idConverted = idConverted.replaceAll("3", "THREE");
+        idConverted = idConverted.replaceAll("4", "FOUR");
+        idConverted = idConverted.replaceAll("5", "FIVE");
+        idConverted = idConverted.replaceAll("6", "SIX");
+        idConverted = idConverted.replaceAll("7", "SEVEN");
+        idConverted = idConverted.replaceAll("8", "EIGHT");
+        idConverted = idConverted.replaceAll("9", "NINE");
+        String execute = "select * from " + idConverted;
         try {
-            RequestBuffer.request(() -> {
-                try {
-                    channel.sendMessage(joinMessage);
-                } catch (MissingPermissionsException exception) {
-                    System.out.println("**Welcome to **" + event.getGuild().getName() + " " + user.getName() + "!");
+            Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(execute);
+            while (rs.next()) {
+                if (rs.getString(4) != null) {
+                    if (rs.getString(4).equals("true")) {
+                        join = true;
+                    } else if (rs.getString(4).equals("false")) {
+                        join = false;
+                    }
                 }
-            });
-        } catch (NullPointerException e) {
-            event.getGuild().getChannels().get(0).sendMessage(joinMessage);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Setup.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String joinMessage = "**Welcome to " + event.getGuild().getName() + "** " + user.mention() + "!";
+        if (join == true) {
+            try {
+                RequestBuffer.request(() -> {
+                    try {
+                        channel.sendMessage(joinMessage);
+                        System.out.println("**Welcome to **" + event.getGuild().getName() + " " + user.getName() + "!");
+                    } catch (MissingPermissionsException exception) {
+                        System.out.println("**Welcome to **" + event.getGuild().getName() + " " + user.getName() + "!");
+                    }
+                });
+            } catch (NullPointerException e) {
+                event.getGuild().getChannels().get(0).sendMessage(joinMessage);
+            }
         }
     }
 
     @EventSubscriber
     public void onLeave(UserLeaveEvent event
     ) {
+        Boolean join = true;
         IChannel channel = event.getGuild().getDefaultChannel();
         IUser user = event.getUser();
-        String name = user.getName();
-        String leaveMessage = "**Hope to see you again,** " + name + "!";
+        String idConverted = event.getGuild().getStringID().replaceAll("0", "Zero");
+        idConverted = idConverted.replaceAll("1", "One");
+        idConverted = idConverted.replaceAll("2", "TWO");
+        idConverted = idConverted.replaceAll("3", "THREE");
+        idConverted = idConverted.replaceAll("4", "FOUR");
+        idConverted = idConverted.replaceAll("5", "FIVE");
+        idConverted = idConverted.replaceAll("6", "SIX");
+        idConverted = idConverted.replaceAll("7", "SEVEN");
+        idConverted = idConverted.replaceAll("8", "EIGHT");
+        idConverted = idConverted.replaceAll("9", "NINE");
+        String execute = "select * from " + idConverted;
         try {
-            RequestBuffer.request(() -> {
-                try {
-                    channel.sendMessage(leaveMessage);
-                } catch (MissingPermissionsException exception) {
-                    System.out.println(leaveMessage);
+            Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/PrimaryDatabase", "Database", "data");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(execute);
+            while (rs.next()) {
+                if (rs.getString(4) != null) {
+                    if (rs.getString(4).equals("true")) {
+                        join = true;
+                    } else if (rs.getString(4).equals("false")) {
+                        join = false;
+                    }
                 }
-            });
-        } catch (NullPointerException e) {
-            event.getGuild().getChannels().get(0).sendMessage(leaveMessage);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Setup.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        String leaveMessage = "**Hope to see you again,** " + user.getName() + "!";
+        if (join == true) {
+            try {
+                RequestBuffer.request(() -> {
+                    try {
+                        channel.sendMessage(leaveMessage);
+                        System.out.println(leaveMessage);
+                    } catch (MissingPermissionsException exception) {
+                        System.out.println(leaveMessage);
+                    }
+                });
+            } catch (NullPointerException e) {
+                event.getGuild().getChannels().get(0).sendMessage(leaveMessage);
+            }
+        }
     }
 
     /**

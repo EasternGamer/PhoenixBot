@@ -4,6 +4,7 @@ import static MainBot.JRASBotGUI.NEWLINE;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.util.MissingPermissionsException;
 import sx.blah.discord.util.RequestBuffer;
 
 /**
@@ -19,10 +20,15 @@ public class ClearCommand {
         int number = Integer.parseInt(num);
         IChannel channel = message.getChannel();
         RequestBuffer.request(() -> {
+            try {
             message.delete();
             bulkDeleteNum = channel.getMessageHistory(number);
             channel.bulkDelete(bulkDeleteNum);
+            }catch (MissingPermissionsException exception) {
+            message.getChannel().sendMessage("**Missing Permission:** MANAGE_MESSAGES");
+        }
         });
+        
     }
 
     public void restore(IMessage event) {

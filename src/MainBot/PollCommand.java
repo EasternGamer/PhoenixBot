@@ -1,4 +1,3 @@
-
 package MainBot;
 
 import static MainBot.BotPrimary.VERSION;
@@ -52,6 +51,7 @@ public class PollCommand {
 
     public void pollProcess(IMessage message) {
         String option = message.getContent();
+        if (option.contains("'")) {
         optionReplace = option.replace("!poll ", "");
         arguements = optionReplace.split("' '");
 
@@ -175,7 +175,6 @@ public class PollCommand {
 
         poll = true;
         if (poll == true) {
-
             List<IMessage> latestMessage = message.getChannel().getMessageHistory();
             IMessage latest = latestMessage.get(0);
             String one = "\u0031\u20E3";
@@ -227,6 +226,8 @@ public class PollCommand {
                 option9B = false;
             });
         }
+    }else {
+     message.getChannel().sendMessage("**Syntax Error:** !poll 'Title' 'Option 1' 'Option 2'\nNote the **'** as the seperator");
     }
-
+}
 }

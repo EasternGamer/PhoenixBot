@@ -37,7 +37,7 @@ public final class BotPrimary {
     public static final String DISCORD = "https://discord.gg/RuK3Sw6";
     public static final String GITHUB = "https://github.com/EasternGamer/PhoenixBot";
     public static final String VERSION = "v1.2";
-    public static final IDiscordClient BOT = createClient("NDM5NDU0ODQyMDcxNTQ3OTA1.DcZsnw.QkEFw-2Xn0pOfxp90bPCDhj0rp0", true);
+    public static final IDiscordClient BOT = createClient("TOKEN", true);
 
     public static IDiscordClient createClient(String token, boolean login) {
 
